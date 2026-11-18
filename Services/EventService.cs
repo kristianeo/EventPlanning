@@ -10,9 +10,23 @@ public class EventService(
 {
     public async Task<EventDto> CreateAsync(CreateEventDto dto)
     {
+        CreateEvent createEvent = new CreateEvent()
+        {
+            Title = dto.Title,
+            Date = dto.Date,
+            Description = dto.Description,
+            Location = dto.Location
+        };
+
+        Task<Event> result = repository.CreateAsync(createEvent);
+
+        await result;
+        
         logger.LogInformation("Creating event {Title} at {Date}",
             dto.Title, dto.Date);
-        throw new NotImplementedException();
+
+        return result.Result.ToDto();
+        
     }
     public Task<IEnumerable<EventDto>> GetAllAsync()
     {
