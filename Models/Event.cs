@@ -11,4 +11,17 @@ public class Event
     public DateTimeOffset Date { get; set; }
     public string Location { get; set; } = string.Empty;
     public string? Description { get; set; }
+
+    public EventDto ToDto()
+    {
+        return new EventDto
+        {
+            Id = Id,
+            Title = Title,
+            Owner = Owner.ToDto(),
+            Date = Date,
+            Location = Location,
+            Description = Description
+        };
+    }
 }

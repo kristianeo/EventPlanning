@@ -1,3 +1,5 @@
+using EventPlanning.Dtos;
+
 namespace EventPlanning.Models;
 
 public class User
@@ -10,4 +12,15 @@ public class User
     public string? Auth0Id { get; set; }
 
     public ICollection<Event> Owned { get; set; } = new List<Event>();
+
+    public UserDto ToDto()
+    {
+        return new UserDto
+        {
+            Id = Id,
+            FirstName = FirstName,
+            LastName = LastName,
+            Email = Email
+        };
+    }
 }

@@ -5,7 +5,7 @@ public class EventDto
     public int Id { get; set; }
     public string Title { get; set; }
     public UserDto Owner { get; set; } = null!;
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
     public string Location { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 }
