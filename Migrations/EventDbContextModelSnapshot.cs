@@ -91,6 +91,15 @@ namespace EventPlanning.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "dev@example.com",
+                            FirstName = "Dev",
+                            LastName = "User"
+                        });
                 });
 
             modelBuilder.Entity("EventPlanning.Models.Event", b =>

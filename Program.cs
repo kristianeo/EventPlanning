@@ -3,6 +3,7 @@ using EventPlanning;
 using EventPlanning.Interfaces;
 using EventPlanning.Repositories;
 using EventPlanning.Services;
+using EventPlanning.UserTest;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<ICurrentUser, FakeCurrentUser>();
 
 
 builder.Services.AddControllers();

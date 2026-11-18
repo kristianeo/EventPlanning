@@ -38,5 +38,14 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContex
             ev.HasIndex(e => e.OwnerId);
             ev.HasIndex(e => e.Date);
         });
+        
+        // test user 
+        modelBuilder.Entity<User>().HasData(new User
+        {
+            Id = 1,
+            FirstName = "Dev",
+            LastName = "User",
+            Email = "dev@example.com"
+        });
     }
 }
