@@ -22,7 +22,12 @@ builder.Services.AddDbContext<EventDbContext>(options =>
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanViewAll", policy =>
+        policy.RequireRole("Admin"));
+});
+
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 using EventPlanning.Dtos;
 using EventPlanning.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventPlanning.Controllers;
@@ -8,6 +9,7 @@ namespace EventPlanning.Controllers;
 [Route("api/[controller]")]
 public class EventsController(IEventService service) : ControllerBase
 {
+    [Authorize(Policy = "CanManageProducts")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EventDto>>> GetAll()
     {
