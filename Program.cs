@@ -28,6 +28,9 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin"));
 });
 
+builder.Services.AddHealthChecks();
+
+
 
 var app = builder.Build();
 
@@ -50,6 +53,9 @@ app.UseAuthorization();
 
 app.MapGet("/secret", (ClaimsPrincipal user) => $"Hello {user.Identity?.Name}")
     .RequireAuthorization();
+
+//TODO: Add a dependency to check 
+app.MapHealthChecks("/health");
 
 app.MapControllers();
 
