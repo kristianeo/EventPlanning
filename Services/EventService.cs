@@ -1,12 +1,14 @@
 using EventPlanning.Dtos;
 using EventPlanning.Interfaces;
 using EventPlanning.Models;
+using EventPlanning.UserTest;
 
 namespace EventPlanning.Services;
 
 public class EventService(
     IEventRepository repository, 
-    ILogger<EventService> logger) :IEventService
+    ILogger<EventService> logger,
+    ICurrentUser currentUser) :IEventService
 {
     public async Task<EventDto> CreateAsync(CreateEventDto dto)
     {
@@ -16,9 +18,10 @@ public class EventService(
         CreateEvent createEvent = new CreateEvent()
         {
             Title = dto.Title,
-            Date = dto.Date,
+            Date = dto.Date.ToUniversalTime(),
             Description = dto.Description,
-            Location = dto.Location
+            Location = dto.Location,
+            OwnerId = currentUser.UserId
         };
 
         Event evt = await repository.CreateAsync(createEvent);
@@ -28,10 +31,8 @@ public class EventService(
     }
     public async Task<IEnumerable<EventDto>> GetAllAsync()
     {
-        List<EventDto> eventDtos = [];
-        eventDtos.AddRange(from evt in await repository.GetAllAsync() select evt.ToDto());
-
-        return eventDtos;
+        var events = await repository.GetAllAsync();
+        return events.Select(e => e.ToDto()).ToList();
     }
     
     public async Task<EventDto?> GetByIdAsync(int id)

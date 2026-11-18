@@ -6,14 +6,19 @@ using Microsoft.EntityFrameworkCore;
 namespace EventPlanning.Repositories;
 
 public class EventRepository(
-    EventDbContext context,
-    ICurrentUser currentUser) : IEventRepository
+    EventDbContext context) : IEventRepository
 {
     public async Task<IEnumerable<Event>> GetAllAsync() => 
-        await context.Events.ToListAsync();
+        await context.Events
+            .Include(e => e.Owner)
+            .AsNoTracking()
+            .ToListAsync();
 
     public async Task<Event?> GetByIdAsync(int id) =>
-        await context.Events.FindAsync(id);
+        await context.Events
+            .Include(e => e.Owner)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == id);
 
     public async Task<Event> CreateAsync(CreateEvent createEvt)
     {
@@ -23,10 +28,12 @@ public class EventRepository(
             Date = createEvt.Date,
             Description = createEvt.Description,
             Location = createEvt.Location,
-            OwnerId = currentUser.UserId
+            OwnerId = createEvt.OwnerId
         };
         context.Events.Add(evt);
         await context.SaveChangesAsync();
+        
+        await context.Entry(evt).Reference(e => e.Owner).LoadAsync();
 
         return evt;
     }

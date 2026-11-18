@@ -2,5 +2,5 @@ namespace EventPlanning.UserTest;
 
 public interface ICurrentUser
 {
-    int UserId { get; set; }
+    int UserId { get; }
 }

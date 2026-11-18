@@ -9,7 +9,7 @@ namespace EventPlanning.Controllers;
 [Route("api/[controller]")]
 public class EventsController(IEventService service) : ControllerBase
 {
-    [Authorize(Policy = "CanManageProducts")]
+    [Authorize(Policy = "CanViewAll")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EventDto>>> GetAll()
     {
@@ -18,8 +18,8 @@ public class EventsController(IEventService service) : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<EventDto>> GetById(int id)
     {
-        var product = await service.GetByIdAsync(id);
-        return product is null ? NotFound() : Ok(product);
+        var evt = await service.GetByIdAsync(id);
+        return evt is null ? NotFound() : Ok(evt);
     }
     [HttpPost]
     public async Task<ActionResult<EventDto>> Create(CreateEventDto dto)
@@ -31,7 +31,7 @@ public class EventsController(IEventService service) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await service.DeleteAsync(id);
-        return NoContent();
+        bool result = await service.DeleteAsync(id);
+        return result ? NoContent() : NotFound();
     }
 }

@@ -46,10 +46,15 @@ app.UseHttpsRedirection();
 
 app.Use(async (context, next) =>
 {
-    Console.WriteLine($"Request starting: {context.Request.Path}");
-    await next(); // pass control to the next middleware
-    Console.WriteLine($"Request finished: {context.Response.StatusCode}");
+    if (app.Logger.IsEnabled(LogLevel.Information))
+        app.Logger.LogInformation("Request starting: {Path}", context.Request.Path);
+
+    await next();
+
+    if (app.Logger.IsEnabled(LogLevel.Information))
+        app.Logger.LogInformation("Request finished: {StatusCode}", context.Response.StatusCode);
 });
+
 app.UseAuthentication();
 app.UseAuthorization();
 
