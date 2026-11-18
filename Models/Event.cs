@@ -12,6 +12,8 @@ public class Event
     public string Location { get; set; } = string.Empty;
     public string? Description { get; set; }
 
+    public ICollection<Participant> Participants { get; set; } = [];
+
     public EventDto ToDto()
     {
         return new EventDto

@@ -59,6 +59,45 @@ namespace EventPlanning.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("EventPlanning.Models.Participant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("Invited");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EventId", "Email")
+                        .IsUnique();
+
+                    b.HasIndex("EventId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("Participant");
+                });
+
             modelBuilder.Entity("EventPlanning.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -113,9 +152,34 @@ namespace EventPlanning.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("EventPlanning.Models.Participant", b =>
+                {
+                    b.HasOne("EventPlanning.Models.Event", "Event")
+                        .WithMany("Participants")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventPlanning.Models.User", "User")
+                        .WithMany("Participations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EventPlanning.Models.Event", b =>
+                {
+                    b.Navigation("Participants");
+                });
+
             modelBuilder.Entity("EventPlanning.Models.User", b =>
                 {
                     b.Navigation("Owned");
+
+                    b.Navigation("Participations");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,7 +11,9 @@ public class User
     
     public string? Auth0Id { get; set; }
 
-    public ICollection<Event> Owned { get; set; } = new List<Event>();
+    public ICollection<Event> Owned { get; set; } = [];
+
+    public ICollection<Participant> Participations { get; set; } = [];
 
     public UserDto ToDto()
     {

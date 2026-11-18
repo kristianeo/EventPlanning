@@ -47,5 +47,34 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContex
             LastName = "User",
             Email = "dev@example.com"
         });
+        
+        modelBuilder.Entity<Participant>(p =>
+        {
+            p.HasKey(x => x.Id);
+
+            p.Property(x => x.Email).HasMaxLength(320);
+
+            p.Property(x => x.Status)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .HasDefaultValue(ParticipantStatus.Invited)
+                .IsRequired();
+
+            p.HasOne(x => x.Event)
+                .WithMany(e => e.Participants)
+                .HasForeignKey(x => x.EventId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            p.HasOne(x => x.User)
+                .WithMany(u => u.Participations)
+                .HasForeignKey(x => x.UserId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // One row per user per event, and one per email per event.
+            // Postgres allows multiple NULLs in a unique index, so rows without a user or email don't clash.
+            p.HasIndex(x => new { x.EventId, x.UserId }).IsUnique();
+            p.HasIndex(x => new { x.EventId, x.Email }).IsUnique();
+        });
     }
 }
