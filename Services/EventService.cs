@@ -10,6 +10,9 @@ public class EventService(
 {
     public async Task<EventDto> CreateAsync(CreateEventDto dto)
     {
+        logger.LogInformation("Creating event {Title} at {Date}",
+            dto.Title, dto.Date);
+        
         CreateEvent createEvent = new CreateEvent()
         {
             Title = dto.Title,
@@ -18,30 +21,35 @@ public class EventService(
             Location = dto.Location
         };
 
-        Task<Event> result = repository.CreateAsync(createEvent);
+        Event evt = await repository.CreateAsync(createEvent);
 
-        await result;
-        
-        logger.LogInformation("Creating event {Title} at {Date}",
-            dto.Title, dto.Date);
-
-        return result.Result.ToDto();
+        return evt.ToDto();
         
     }
-    public Task<IEnumerable<EventDto>> GetAllAsync()
+    public async Task<IEnumerable<EventDto>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        List<EventDto> eventDtos = [];
+        eventDtos.AddRange(from evt in await repository.GetAllAsync() select evt.ToDto());
+
+        return eventDtos;
     }
     
-    public Task<EventDto?> GetByIdAsync(int id)
+    public async Task<EventDto?> GetByIdAsync(int id)
     {
-        logger.LogWarning("Product {ProductId} not found, returning empty result",
+        Event? evt = await repository.GetByIdAsync(id);
+
+        if (evt != null)
+        {
+            return evt.ToDto();
+        }
+        
+        logger.LogWarning("Event {EventId} not found, returning empty result",
             id);
-        throw new NotImplementedException();
+        return null;
     }
 
-    public Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+       return await repository.DeleteAsync(id);
     }
 }

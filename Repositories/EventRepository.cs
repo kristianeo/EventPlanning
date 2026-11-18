@@ -31,13 +31,16 @@ public class EventRepository(
         return evt;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
         var evt = await context.Events.FindAsync(id);
         if (evt is not null)
         {
             context.Events.Remove(evt);
             await context.SaveChangesAsync();
+            return true;
         }
+
+        return false;
     }
 }

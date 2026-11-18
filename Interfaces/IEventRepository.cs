@@ -7,6 +7,6 @@ public interface IEventRepository
     Task<IEnumerable<Event>> GetAllAsync();
     Task<Event?> GetByIdAsync(int id);
     Task <Event> CreateAsync(CreateEvent createEvent);
-    Task DeleteAsync(int id);
+    Task<bool> DeleteAsync(int id);
 
 }
