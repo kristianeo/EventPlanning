@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EventPlanning;
 using EventPlanning.Interfaces;
 using EventPlanning.Repositories;
@@ -19,6 +20,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<EventDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer();
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,8 +42,10 @@ app.Use(async (context, next) =>
 });
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGet("/secret", (ClaimsPrincipal user) => $"Hello {user.Identity?.Name}")
+    .RequireAuthorization();
+
 app.MapControllers();
-
-
 
 app.Run();

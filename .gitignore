@@ -116,3 +116,5 @@ out/
 Thumbs.db
 *~
 ~$*
+
+http-client.private.env.json
