@@ -1,0 +1,118 @@
+# ---------- .NET build output ----------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+artifacts/
+publish/
+[Ll]og/
+[Ll]ogs/
+*.log
+*.binlog
+
+# ---------- User-specific files ----------
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+mono_crash.*
+
+# ---------- Visual Studio / ReSharper ----------
+.vs/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+*.sln.iml
+
+# ---------- Tests & coverage ----------
+[Tt]est[Rr]esult*/
+TestResult.xml
+nunit-*.xml
+*.VisualState.xml
+BenchmarkDotNet.Artifacts/
+coverage*.json
+coverage*.xml
+coverage*.info
+*.coverage
+*.coveragexml
+*.dotCover
+.axoCover/*
+!.axoCover/settings.json
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# ---------- Publish profiles ----------
+# Comment out *.pubxml if you want to share publish profiles
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# ---------- NuGet ----------
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+
+# ---------- Debug / compiler leftovers ----------
+*.pdb
+*.ilk
+*.obj
+*.iobj
+*.tmp
+*.tmp_proj
+*.cache
+!?*.[Cc]ache/
+*_wpftmp.csproj
+
+# ---------- Local databases ----------
+*.mdf
+*.ldf
+*.ndf
+*.sdf
+
+# ---------- Secrets / local config ----------
+.env
+.env.*
+appsettings.*.local.json
+*.local.json
+*.pfx
+*.snk
+
+# ---------- Front end ----------
+node_modules/
+.sass-cache/
+# Bundler output (add when you introduce a bundler)
+# wwwroot/dist/
+
+# ---------- Rider / JetBrains ----------
+.idea/
+*.iws
+out/
+
+# ---------- VS Code (optional) ----------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+*~
+~$*
