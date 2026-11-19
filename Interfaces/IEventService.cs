@@ -1,4 +1,5 @@
 using EventPlanning.Dtos;
+using EventPlanning.Models;
 
 namespace EventPlanning.Interfaces;
 
@@ -7,5 +8,10 @@ public interface IEventService
         Task<IEnumerable<EventDto>> GetAllAsync();
         Task<EventDto?> GetByIdAsync(int id);
         Task<EventDto> CreateAsync(CreateEventDto dto);
-        Task<bool> DeleteAsync(int id);
+        Task<DeleteResult> DeleteAsync(int id);
+        
+        Task<IEnumerable<EventDto>> GetUserEvents();
+        Task<IEnumerable<EventDto>> GetOwnUserEvents();
+        Task<IEnumerable<EventDto>> GetPublicEvents();
 }
+

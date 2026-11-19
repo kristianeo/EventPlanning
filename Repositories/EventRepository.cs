@@ -1,6 +1,5 @@
 using EventPlanning.Interfaces;
 using EventPlanning.Models;
-using EventPlanning.UserTest;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanning.Repositories;
@@ -50,4 +49,6 @@ public class EventRepository(
 
         return false;
     }
+    
+    // TODO: GetUserEvents and GetUserParticipations()
 }

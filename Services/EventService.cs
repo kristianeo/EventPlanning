@@ -49,8 +49,35 @@ public class EventService(
         return null;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<DeleteResult> DeleteAsync(int id)
     {
-       return await repository.DeleteAsync(id);
+        var evt = await repository.GetByIdAsync(id);
+        if (evt is null)
+            return DeleteResult.NotFound;
+
+        if (evt.OwnerId != currentUser.UserId)
+        {
+            logger.LogWarning("User {UserId} tried to delete event {EventId} owned by {OwnerId}",
+                currentUser.UserId, id, evt.OwnerId);
+            return DeleteResult.Forbidden;
+        }
+
+        await repository.DeleteAsync(id);
+        return DeleteResult.Deleted;
+    }
+
+    public Task<IEnumerable<EventDto>> GetUserEvents()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<EventDto>> GetOwnUserEvents()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<EventDto>> GetPublicEvents()
+    {
+        throw new NotImplementedException();
     }
 }

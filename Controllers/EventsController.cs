@@ -1,5 +1,6 @@
 using EventPlanning.Dtos;
 using EventPlanning.Interfaces;
+using EventPlanning.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,12 @@ public class EventsController(IEventService service) : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        bool result = await service.DeleteAsync(id);
-        return result ? NoContent() : NotFound();
+        return await service.DeleteAsync(id) switch
+        {
+            DeleteResult.Deleted   => NoContent(),
+            DeleteResult.NotFound  => NotFound(),
+            DeleteResult.Forbidden => Forbid(),
+            _ => StatusCode(500)
+        };
     }
 }
