@@ -7,6 +7,7 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContex
 {
     public DbSet<Event> Events => Set<Event>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<Participant> Participants => Set<Participant>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>(user =>
@@ -15,15 +16,16 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContex
 
             user.Property(u => u.FirstName).IsRequired().HasMaxLength(100);
             user.Property(u => u.LastName).IsRequired().HasMaxLength(100);
-            user.Property(u => u.Email).HasMaxLength(320);
+            user.Property(u => u.Email).IsRequired().HasMaxLength(320);
             user.Property(u => u.Auth0Id).HasMaxLength(200);
             
             user.HasIndex(u => u.Auth0Id).IsUnique();
+            user.HasIndex(u => u.Email).IsUnique();
             
             user.HasMany(u => u.Owned)
                 .WithOne(e => e.Owner)
                 .HasForeignKey(e => e.OwnerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Event>(ev =>
@@ -52,7 +54,7 @@ public class EventDbContext(DbContextOptions<EventDbContext> options) : DbContex
         {
             p.HasKey(x => x.Id);
 
-            p.Property(x => x.Email).HasMaxLength(320);
+            p.Property(x => x.Email).IsRequired().HasMaxLength(320);
 
             p.Property(x => x.Status)
                 .HasConversion<string>()

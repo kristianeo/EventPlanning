@@ -6,15 +6,15 @@ namespace EventPlanning.Repositories;
 
 public class UserRepository(EventDbContext database) : IUserRepository
 {
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return await database.Users.ToListAsync();
-    }
+    public async Task<IEnumerable<User>> GetAllAsync() => 
+        await database.Users
+            .AsNoTracking()
+            .ToListAsync();
 
-    public async Task<User?> GetByIdAsync(int id)
-    {
-        return await database.Users.FirstOrDefaultAsync(u => u.Id == id);
-    }
+    public async Task<User?> GetByIdAsync(int id) => 
+        await database.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
 
     public async Task<User> CreateAsync(CreateUser createUser)
     {

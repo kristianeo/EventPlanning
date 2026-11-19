@@ -7,7 +7,7 @@ namespace EventPlanning.Services;
 
 public class UserService(
     IUserRepository repository, 
-    ILogger<EventService> logger,
+    ILogger<UserService> logger,
     ICurrentUser currentUser) : IUserService
 {
     public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -55,8 +55,8 @@ public class UserService(
 
         if (user.Id != currentUser.UserId)
         {
-            logger.LogWarning("User {UserId} tried to delete event {EventId} owned by {OwnerId}",
-                currentUser.UserId, userId, user.Id);
+            logger.LogWarning("User {UserId} tried to delete user {TargetUserId}",
+                currentUser.UserId, userId);
             return DeleteResult.Forbidden;
         }
 
