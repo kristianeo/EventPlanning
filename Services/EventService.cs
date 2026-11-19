@@ -66,14 +66,16 @@ public class EventService(
         return DeleteResult.Deleted;
     }
 
-    public Task<IEnumerable<EventDto>> GetUserEvents()
+    public async Task<IEnumerable<EventDto>> GetUserParticipations()
     {
-        throw new NotImplementedException();
+        var events = await repository.GetByOwnerAsync(currentUser.UserId);
+        return events.Select(e => e.ToDto()).ToList();
     }
 
-    public Task<IEnumerable<EventDto>> GetOwnUserEvents()
+    public async Task<IEnumerable<EventDto>> GetOwnUserEvents()
     {
-        throw new NotImplementedException();
+        var events = await repository.GetByOwnerAsync(currentUser.UserId);
+        return events.Select(e => e.ToDto()).ToList();
     }
 
     public Task<IEnumerable<EventDto>> GetPublicEvents()

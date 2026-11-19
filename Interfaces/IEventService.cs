@@ -10,7 +10,7 @@ public interface IEventService
         Task<EventDto> CreateAsync(CreateEventDto dto);
         Task<DeleteResult> DeleteAsync(int id);
         
-        Task<IEnumerable<EventDto>> GetUserEvents();
+        Task<IEnumerable<EventDto>> GetUserParticipations();
         Task<IEnumerable<EventDto>> GetOwnUserEvents();
         Task<IEnumerable<EventDto>> GetPublicEvents();
 }

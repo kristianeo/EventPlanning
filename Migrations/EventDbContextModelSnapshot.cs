@@ -95,7 +95,7 @@ namespace EventPlanning.Migrations
                     b.HasIndex("EventId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("Participant");
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("EventPlanning.Models.User", b =>
@@ -111,6 +111,7 @@ namespace EventPlanning.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(320)
                         .HasColumnType("character varying(320)");
 
@@ -127,6 +128,9 @@ namespace EventPlanning.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Auth0Id")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -146,7 +150,7 @@ namespace EventPlanning.Migrations
                     b.HasOne("EventPlanning.Models.User", "Owner")
                         .WithMany("Owned")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Owner");

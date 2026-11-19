@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventPlanning.Repositories;
 
-public class EventRepository(
-    EventDbContext context) : IEventRepository
+public class EventRepository(EventDbContext context) : IEventRepository
 {
     public async Task<IEnumerable<Event>> GetAllAsync() => 
         await context.Events
@@ -49,6 +48,21 @@ public class EventRepository(
 
         return false;
     }
-    
-    // TODO: GetUserEvents and GetUserParticipations()
+
+    public async Task<IEnumerable<Event>> GetByOwnerAsync(int ownerId) =>
+        await context.Events
+            .Where(e => e.OwnerId == ownerId)
+            .Include(e => e.Owner)
+            .AsNoTracking()
+            .OrderBy(e => e.Date)
+            .ToListAsync();
+
+    public async Task<IEnumerable<Event>> GetUserParticipations(int userId) =>
+        await context.Events
+            .Where(e => e.Participants.Any(p => p.UserId == userId))
+            .Include(e => e.Owner)
+            .Include(e => e.Participants.Where(p => p.UserId == userId)) // only this user's row, so their status is available
+            .AsNoTracking()
+            .OrderBy(e => e.Date)
+            .ToListAsync();
 }
